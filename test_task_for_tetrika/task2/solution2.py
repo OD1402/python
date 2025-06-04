@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import csv
 from collections import defaultdict
 import re
-
+import os
 
 def get_animals_from_wikipedia():
     base_url = "https://ru.wikipedia.org/wiki/Категория:Животные_по_алфавиту"
@@ -25,9 +25,9 @@ def get_animals_from_wikipedia():
 
         for link in animal_links:
             animal_name = link.text.strip()
-            if animal_name:  
+            if animal_name:
                 # print(animal_name)
-                
+
                 # Получаем первую букву названия
                 first_letter = animal_name[0].upper()
                 result[first_letter] += 1
@@ -58,16 +58,19 @@ def get_animals_from_wikipedia():
 
 
 def save_to_csv(result, filename="beasts.csv"):
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_dir, filename)
+
     # Сортируем буквы по алфавиту
     sorted_letters = sorted(result.keys())
 
     # Записываем результаты в CSV
-    with open(filename, "w", newline="", encoding="utf-8") as csvfile:
+    with open(file_path, "w", newline="", encoding="utf-8") as csvfile:
         writer = csv.writer(csvfile)
         for letter in sorted_letters:
             writer.writerow([letter, result[letter]])
 
-    print(f"Результаты сохранены в файл {filename}")
+    print(f"Результаты сохранены в файл {file_path}")
 
 
 if __name__ == "__main__":
@@ -77,6 +80,6 @@ if __name__ == "__main__":
     # Сохраняем результаты в CSV
     save_to_csv(result)
 
-    # Выводим результаты для проверки
+    # Выводим на экран результаты для проверки
     for letter, count in sorted(result.items()):
         print(f"{letter}: {count}")
