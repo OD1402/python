@@ -18,18 +18,18 @@
 * Установить pytest (фреймворк для тестирования)
 
 ### Запуск тасков
-* python task1/solution1.py
-* python task2/solution2.py
-* python task3/solution3.py
+* `python task1/solution1.py`
+* `python task2/solution2.py`
+* `python task3/solution3.py`
 
 ### Запуск тестов
 
 Запуск тестов отдельно для каждой задачи:
-* pytest task1/test_1.py -v
-* pytest task2/test_2.py -v
-* pytest task3/test_3.py -v
+* `pytest task1/test_1.py -v`
+* `pytest task2/test_2.py -v`
+* `pytest task3/test_3.py -v`
   
 Запуск сразу всех тестов:
-pytest -v
+* `pytest -v`
 
 Тест TestGetAnimals скачивает все страницы животных Википедии, поэтому выполнение теста занимает около 1,5 минут.
