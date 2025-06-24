@@ -25,7 +25,6 @@ class AlkotekaSpider(scrapy.Spider):
     }
 
     async def start(self):
-        CITY_URL = "https://alkoteka.com/web-api/v1/city"
         self.logger.info(f"Получим актуальный список городов по ссылке: {CITY_URL}")
         yield scrapy.Request(url=CITY_URL, callback=self.make_params)
 
