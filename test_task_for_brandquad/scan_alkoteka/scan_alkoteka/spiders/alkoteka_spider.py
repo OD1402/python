@@ -1,13 +1,14 @@
 import scrapy
 import json
 
+CITY_URL = "https://alkoteka.com/web-api/v1/city"
+BASE_PRODUCT_URL = "https://alkoteka.com/web-api/v1/product?"
+FACETS = ["krepkiy-alkogol", "produkty-1", "slaboalkogolnye-napitki-2"]
+
 
 class AlkotekaSpider(scrapy.Spider):
     name = "scan_alkoteka"
     allowed_domains = ["alkoteka.com"]
-
-    # Список разделов которые будем сканировать
-    facets = ["krepkiy-alkogol", "produkty-1", "slaboalkogolnye-napitki-2"]
 
     # Настройки для сохранения данных в output.json
     custom_settings = {
@@ -21,13 +22,12 @@ class AlkotekaSpider(scrapy.Spider):
         },
         "FEED_EXPORT_ENCODING": "utf-8",
         "DOWNLOAD_DELAY": 0.5,  # интервал между запросами
-        "ROBOTSTXT_OBEY": False,  # Отключаем проверку robots.txt для API, так как это не веб-страница
     }
 
     async def start(self):
-        city_url = "https://alkoteka.com/web-api/v1/city"
-        self.logger.info(f"Получим актуальный список городов по ссылке: {city_url}")
-        yield scrapy.Request(url=city_url, callback=self.make_params)
+        CITY_URL = "https://alkoteka.com/web-api/v1/city"
+        self.logger.info(f"Получим актуальный список городов по ссылке: {CITY_URL}")
+        yield scrapy.Request(url=CITY_URL, callback=self.make_params)
 
     def make_params(self, response):
         """
@@ -52,7 +52,7 @@ class AlkotekaSpider(scrapy.Spider):
                 city_uuid = item.get("uuid")
                 city_name = item.get("name")
                 if city_uuid:
-                    for facet_slug in self.facets:
+                    for facet_slug in FACETS:
                         # начинаем с первой страницы для каждой комбинации город-фасет
                         self.logger.info(f"city: {city_name}, facet: {facet_slug}")
                         yield self.make_product_request(
@@ -75,7 +75,7 @@ class AlkotekaSpider(scrapy.Spider):
         """
         Выполняем запрос на получение продуктов
         """
-        product_url = f"https://alkoteka.com/web-api/v1/product?city_uuid={city_uuid}&page={page}&per_page=20&root_category_slug={facet_slug}"
+        product_url = f"{BASE_PRODUCT_URL}city_uuid={city_uuid}&page={page}&per_page=20&root_category_slug={facet_slug}"
 
         return scrapy.Request(
             url=product_url,
