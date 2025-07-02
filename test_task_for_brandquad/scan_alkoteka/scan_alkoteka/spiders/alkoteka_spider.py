@@ -323,9 +323,11 @@ class AlkotekaSpider(scrapy.Spider):
 
         ########################
         transformed = {
+            # RPC по описанию формата "Уникальный код товара."
+            # В исходных данных есть артикул и uuid, возьмем артикул (vendor_code)
             "RPC": data_results.get(
                 "vendor_code"
-            ),  # это артикул - уникальный код только в рамках сайта, другого кода нет
+            ),
             # "url": f"https://alkoteka.com/product/{category_slug}/{card_slug}",
             "url": product_url,
             "title": (
