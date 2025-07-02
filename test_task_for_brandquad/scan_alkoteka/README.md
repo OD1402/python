@@ -30,5 +30,5 @@
 
 ### Запуск кравлера:
 ```
-scrapy crawl scan_alkoteka
+scrapy crawl scan_alkoteka -a city_name="Ленинградская ст-ца"
 ```
